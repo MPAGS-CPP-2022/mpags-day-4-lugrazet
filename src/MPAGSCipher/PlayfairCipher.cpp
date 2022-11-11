@@ -18,57 +18,50 @@ void PlayfairCipher::setKey(const std::string& key){
     // is replaced with the alphabet (J never I)
     
     // store the original key
-    // If temp_key is okay by the end, we will replace key_ with temp_key?
     key_ = key;
-    std::string temp_key{key};
 
-    //Append the alphabet    
-    auto iter { std:: back_inserter( temp_key ) };
+    //Append the alphabet
+    auto iter{std::back_inserter(key_)};
     for (auto iter2{alphabet_.begin()}; iter2!=alphabet_.end(); ++iter2)
     {
         iter = *iter2;
     }
     
     // Make sure the key is upper case
-    std::transform(temp_key.begin(), temp_key.end(), temp_key.begin(), ::toupper);
+    std::transform(key_.begin(), key_.end(), key_.begin(), ::toupper);
 
     // Remove non-alpha characters
-    auto iter3{ std::remove_if(temp_key.begin(), temp_key.end(), 
-        [] (char c) 
-        {
-            return !(std::isalpha(c));
-        }) };
+    auto iter3{std::remove_if(key_.begin(), key_.end(),
+                              [](char c) { return !(std::isalpha(c)); })};
     //actually erase
-    temp_key.erase(iter3, temp_key.end());
+    key_.erase(iter3, key_.end());
 
     // Change J -> I
-    std::transform(temp_key.begin(), temp_key.end(), temp_key.begin(), [] (char c) {if (c=='J') return 'I'; return c;} );
-        
+    std::transform(key_.begin(), key_.end(), key_.begin(), [](char c) {
+        if (c == 'J')
+            return 'I';
+        return c;
+    });
+
     // Remove duplicated letters
     std::string enc{};
 
-    auto iter4{ std::remove_if(temp_key.begin(), temp_key.end(), 
-        [&enc] (char c) 
-        {
-            if (enc.find(c) == std::string::npos)
-            {
-                enc += c;
-                return false;
-            }
-            else
-                return true;
-        }
-    )};
+    auto iter4{std::remove_if(key_.begin(), key_.end(), [&enc](char c) {
+        if (enc.find(c) == std::string::npos) {
+            enc += c;
+            return false;
+        } else
+            return true;
+    })};
     //actually erase
-    temp_key.erase(iter4, temp_key.end());
+    key_.erase(iter4, key_.end());
 
     // Store the coords of each letter
-    for(std::string::size_type i = 0; i < temp_key.size(); ++i) {
+    for (std::string::size_type i = 0; i < key_.size(); ++i) {
         std::pair<int, int> p{i%5, i/5};
-        C2PMap_[temp_key[i]] = p;
-        P2CMap_[p] = temp_key[i];
+        C2PMap_[key_[i]] = p;
+        P2CMap_[p] = key_[i];
     }
-    // Store the playfair cihper key map   
 }
 
 std::string PlayfairCipher::applyCipher(const std::string& inputText,
