@@ -67,14 +67,82 @@ void PlayfairCipher::setKey(const std::string& key){
 std::string PlayfairCipher::applyCipher(const std::string& inputText,
                                       const CipherMode cipherMode) const
 {
+    std::string outputText{inputText};
+
     // Change J → I
+    std::transform(outputText.begin(), outputText.end(), outputText.begin(),
+                   [](char c) {
+                       if (c == 'J')
+                           return 'I';
+                       return c;
+                   });
+
     // If repeated chars in a digraph add an X or Q if XX
+
+    for (size_t i{0}; i < outputText.size() - 1; ++i) {
+        if (outputText[i] == outputText[i + 1]) {
+            if (outputText[i] == 'X') {
+                std::string Q_str{"Q"};
+                outputText.insert(i + 1, Q_str);
+            } else {
+                std::string X_str{"X"};
+                outputText.insert(i + 1, X_str);
+            }
+        }
+    }
+
     // if the size of input is odd, add a trailing Z
+    if ((outputText.size() % 2) == 1) {
+        outputText += 'Z';
+    }
+
     // Loop over the input in Digraphs
-    // - Find the coords in the grid for each digraph
-    // - Apply the rules to these coords to get 'new' coords
-    // - Find the letter associated with the new coords
-    // return the text
+    for (std::string::size_type i{0}; i < outputText.size() - 1; i += 2) {
+        // - Find the coords in the grid for each digraph
+
+        std::pair<int, int> p0{(*C2PMap_.find(outputText[i])).second};
+        std::pair<int, int> p1{(*C2PMap_.find(outputText[i + 1])).second};
+
+        std::pair<int, int> p0_new{p0.first, p0.second};
+        std::pair<int, int> p1_new{p1.first, p1.second};
+
+        //Debugging print
+        std::cout << "\n" << outputText[i] << std::endl;
+        std::cout << "p0: (" << p0.first << ", " << p0.second << " )"
+                  << std::endl;
+
+        std::cout << "\n" << outputText[i + 1] << std::endl;
+        std::cout << "p1: (" << p1.first << ", " << p1.second << " )"
+                  << std::endl;
+
+        // - Apply the rules to these coords to get 'new' coords
+        // Do the "in-line" pairs first.
+        // Modulo to wrap around
+        if ((p0.first - p1.first) == 0) {
+            p0_new.second = (std::max(p0.second, p1.second) + 1) % 5;
+            p1_new.second = std::max(p0.second, p1.second);
+        } else if ((p0.second - p1.second) == 0) {
+            p0_new.first = (std::max(p0.first, p1.first) + 1) % 5;
+            p1_new.first = (std::max(p0.first, p1.first));
+        }
+        // Rectangle next
+        else {
+            p0_new.second = p1.second;
+            p1_new.second = p0.second;
+        };
+
+        //Debugging print
+        std::cout << "\n" << outputText[i] << std::endl;
+        std::cout << "p0_new: (" << p0_new.first << ", " << p0_new.second
+                  << " )" << std::endl;
+
+        std::cout << "\n" << outputText[i + 1] << std::endl;
+        std::cout << "p1_new: (" << p1_new.first << ", " << p1_new.second
+                  << " )" << std::endl;
+
+        // - Find the letter associated with the new coords
+        // return the text
+    }
     switch(cipherMode) {
         case CipherMode::Encrypt:
             // code block
@@ -85,5 +153,5 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText,
         default:
             break;
         }
-    return inputText;
+        return outputText;
 }
