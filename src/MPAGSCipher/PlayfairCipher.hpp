@@ -2,7 +2,7 @@
 #define MPAGSCIPHER_PLAYFAIRCIPHER_HPP
 
 #include "CipherMode.hpp"
-
+#include <map>
 #include <cstddef>
 #include <string>
 #include <vector>
@@ -50,7 +50,8 @@ class PlayfairCipher {
 
     /// The size of the alphabet
     const std::size_t alphabetSize_{alphabet_.size()};
-    
+    std::map<char, std::pair<int, int>> C2PMap_;
+    std::map<std::pair<int,int>, char> P2CMap_;
     std::string key_{""};
 };
 #endif
