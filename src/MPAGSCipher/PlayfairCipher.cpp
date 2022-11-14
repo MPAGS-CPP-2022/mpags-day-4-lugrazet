@@ -116,20 +116,36 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText,
                   << std::endl;
 
         // - Apply the rules to these coords to get 'new' coords
+        int flagMode{0};
+        switch (cipherMode) {
+            case CipherMode::Encrypt:
+                flagMode = 1;
+                break;
+            case CipherMode::Decrypt:
+                flagMode = -1;
+                break;
+            default:
+                break;
+        }
         // Do the "in-line" pairs first.
         // Modulo to wrap around
         if ((p0.first - p1.first) == 0) {
-            p0_new.second = (std::max(p0.second, p1.second) + 1) % 5;
-            p1_new.second = std::max(p0.second, p1.second);
+            p0_new.second = (p0.second + flagMode + 5) % 5;
+            p1_new.second = (p1.second + flagMode + 5) % 5;
+
         } else if ((p0.second - p1.second) == 0) {
-            p0_new.first = (std::max(p0.first, p1.first) + 1) % 5;
-            p1_new.first = (std::max(p0.first, p1.first));
+            p0_new.first = (p0.first + flagMode + 5) % 5;
+            p1_new.first = (p1.first + flagMode + 5) % 5;
         }
         // Rectangle next
         else {
-            p0_new.second = p1.second;
-            p1_new.second = p0.second;
+            p0_new.first = p1.first;
+            p1_new.first = p0.first;
         };
+
+        // - Find the letter associated with the new coords
+        outputText[i] = (*P2CMap_.find(p0_new)).second;
+        outputText[i + 1] = (*P2CMap_.find(p1_new)).second;
 
         //Debugging print
         std::cout << "\n" << outputText[i] << std::endl;
@@ -139,19 +155,7 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText,
         std::cout << "\n" << outputText[i + 1] << std::endl;
         std::cout << "p1_new: (" << p1_new.first << ", " << p1_new.second
                   << " )" << std::endl;
-
-        // - Find the letter associated with the new coords
-        // return the text
     }
-    switch(cipherMode) {
-        case CipherMode::Encrypt:
-            // code block
-            break;
-        case CipherMode::Decrypt:
-            // code block
-            break;
-        default:
-            break;
-        }
-        return outputText;
+    // return the text
+    return outputText;
 }
