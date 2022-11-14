@@ -19,16 +19,16 @@
 class PlayfairCipher {
   public:
     /**
-     * \brief Constructor, takes a given key, and calls the setKey
+     * \brief Creates a new PlayfairCipher, converting the given string into the key via the setKey function
      *
-     * \param key the key to use in the cipher
+     * \param key the key to be transformed for use in the cipher
      */
     PlayfairCipher(const std::string& key);
 
     /** 
-     * \brief Create a new CaesarCipher, converting the given string into the key
+     * \brief Function for converting a string into the appropriate grid map for the cipher.
      *
-     * \param key the string to convert into the key to be used in the cipher
+     * \param key the string to convert into the "effective" key to be used in the cipher
      */
     void setKey(const std::string& key);
 
@@ -50,8 +50,11 @@ class PlayfairCipher {
 
     /// The size of the alphabet
     const std::size_t alphabetSize_{alphabet_.size()};
+
+    // The key Maps, transforming Characters to Pairs of coordinates or vice-versa.
     std::map<char, std::pair<int, int>> C2PMap_;
     std::map<std::pair<int,int>, char> P2CMap_;
+    // The key fed into the Playfair cipher, transformed for use in creating the Map.
     std::string key_{""};
 };
 #endif

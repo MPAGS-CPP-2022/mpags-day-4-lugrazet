@@ -9,8 +9,6 @@ PlayfairCipher::PlayfairCipher(const std::string& key) {
     setKey(key);
 }
 
-
-
 void PlayfairCipher::setKey(const std::string& key){
     //The playfair is based around the idea of exchanging pairs
     // of letters due to a 5x5 grid. The grid contains the key
@@ -106,15 +104,6 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText,
         std::pair<int, int> p0_new{p0.first, p0.second};
         std::pair<int, int> p1_new{p1.first, p1.second};
 
-        //Debugging print
-        std::cout << "\n" << outputText[i] << std::endl;
-        std::cout << "p0: (" << p0.first << ", " << p0.second << " )"
-                  << std::endl;
-
-        std::cout << "\n" << outputText[i + 1] << std::endl;
-        std::cout << "p1: (" << p1.first << ", " << p1.second << " )"
-                  << std::endl;
-
         // - Apply the rules to these coords to get 'new' coords
         int flagMode{0};
         switch (cipherMode) {
@@ -146,15 +135,6 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText,
         // - Find the letter associated with the new coords
         outputText[i] = (*P2CMap_.find(p0_new)).second;
         outputText[i + 1] = (*P2CMap_.find(p1_new)).second;
-
-        //Debugging print
-        std::cout << "\n" << outputText[i] << std::endl;
-        std::cout << "p0_new: (" << p0_new.first << ", " << p0_new.second
-                  << " )" << std::endl;
-
-        std::cout << "\n" << outputText[i + 1] << std::endl;
-        std::cout << "p1_new: (" << p1_new.first << ", " << p1_new.second
-                  << " )" << std::endl;
     }
     // return the text
     return outputText;
