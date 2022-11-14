@@ -33,6 +33,8 @@ TEST_CASE("Playfair Cipher encryption", "[Playfair]")
 }
 
 // KGYVRVVQGRMF -> KG YV RV XV QG RM FZ ->d HE LX LO WU OH DG ZT
+
+//Uh Oh this doesn't work. Need to fix. Re:Latham's email.
 TEST_CASE("Playfair Cipher decryption", "[Playfair]")
 {
     PlayfairCipher pfc{"playfair"};
