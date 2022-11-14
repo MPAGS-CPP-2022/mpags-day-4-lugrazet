@@ -33,7 +33,6 @@ TEST_CASE("Playfair Cipher encryption", "[Playfair]")
 }
 
 // KGYVRVVQGRMF -> KG YV RV XV QG RM FZ ->d HE LX LO WU OH DG ZT
-// (Feels like it kinda sucks as an encryption if we don't know what Decr(Enc(str)) is)
 TEST_CASE("Playfair Cipher decryption", "[Playfair]")
 {
     PlayfairCipher pfc{"playfair"};
