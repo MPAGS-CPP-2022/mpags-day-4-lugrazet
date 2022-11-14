@@ -75,9 +75,8 @@ std::string PlayfairCipher::applyCipher(const std::string& inputText,
                        return c;
                    });
 
-    // If repeated chars in a digraph add an X or Q if XX
-
-    for (size_t i{0}; i < outputText.size() - 1; ++i) {
+    // If repeated chars in a digraph add an X or add Q if the digraph is XX
+    for (size_t i{0}; i < outputText.size() - 1; i += 2) {
         if (outputText[i] == outputText[i + 1]) {
             if (outputText[i] == 'X') {
                 std::string Q_str{"Q"};

@@ -32,12 +32,10 @@ TEST_CASE("Playfair Cipher encryption", "[Playfair]")
             "KGYVRVVQGRMF");
 }
 
-// KGYVRVVQGRMF -> KG YV RV XV QG RM FZ ->d HE LX LO WU OH DG ZT
-
-//Uh Oh this doesn't work. Need to fix. Re:Latham's email.
+// KG YV RV VQ GR MF (processing leaves it as is) ->d HE LX LO Wo RL DZ
 TEST_CASE("Playfair Cipher decryption", "[Playfair]")
 {
     PlayfairCipher pfc{"playfair"};
     REQUIRE(pfc.applyCipher("KGYVRVVQGRMF", CipherMode::Decrypt) ==
-            "HELXLOWUOHDGZT");
+            "HELXLOWORLDZ");
 }
