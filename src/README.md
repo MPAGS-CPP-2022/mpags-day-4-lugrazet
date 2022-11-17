@@ -68,7 +68,7 @@ Available options:
                    Stdout will be used if not supplied
 
   -c CIPHER        Specify the cipher to be used to perform the encryption/decryption
-                   CIPHER can be caesar or playfair (not yet implemented) - caesar is the default
+                   CIPHER can be caesar or playfair - caesar is the default
 
   -k KEY           Specify the cipher KEY
                    A null key, i.e. no encryption, is used if not supplied
@@ -88,7 +88,7 @@ classical ciphers, it is transliterated using the following rules:
 - All other characters (punctuation) are discarded
 
 The results of this transliteration are then passed to the cipher.
-At present only the Caesar cipher is supported.
+At present both the Caesar and Playfair ciphers are supported.
 
 The result of applying the cipher will then be written to stdout or to the
 file supplied with the `-o` option.
@@ -107,6 +107,8 @@ file supplied with the `-o` option.
     ├── MPAGSCipher                     Subdirectory for MPAGSCipher library code
     │   ├── CaesarCipher.cpp
     │   ├── CaesarCipher.hpp
+    │   ├── PlayfairCipher.cpp
+    │   ├── PlayfairCipher.hpp
     │   ├── CipherMode.hpp
     │   ├── CipherType.hpp
     │   ├── CMakeLists.txt
@@ -120,6 +122,7 @@ file supplied with the `-o` option.
         ├── catch.hpp
         ├── CMakeLists.txt
         ├── testCaesarCipher.cpp
+        ├── testPlayfairCipher.cpp
         ├── testCatch.cpp
         ├── testHello.cpp
         ├── testProcessCommandLine.cpp
